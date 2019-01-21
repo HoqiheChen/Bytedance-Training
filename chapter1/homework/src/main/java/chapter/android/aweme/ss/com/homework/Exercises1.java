@@ -18,6 +18,7 @@ public class Exercises1 extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //作业见app中。
     }
 
 }

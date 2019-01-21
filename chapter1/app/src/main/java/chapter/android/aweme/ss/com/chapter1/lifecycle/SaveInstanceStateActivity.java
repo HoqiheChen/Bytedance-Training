@@ -32,6 +32,7 @@ public class SaveInstanceStateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        System.out.println("#SaveInstanceStateActivity被调用");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saveinstance);
         mLifecycleDisplay = findViewById(R.id.tv_loglifecycle);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.TextView;
 
 import chapter.android.aweme.ss.com.chapter1.intent.IntentActivity;
 import chapter.android.aweme.ss.com.chapter1.lifecycle.LifeCycleActivity;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         findViewById(R.id.btn_lifecycle).setOnClickListener(this);
         findViewById(R.id.btn_xml).setOnClickListener(this);
         findViewById(R.id.btn_intent).setOnClickListener(this);
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.btn_xml:
                 startActivity(new Intent(this, XmlActivity.class));

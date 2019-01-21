@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 
+import chapter.android.aweme.ss.com.chapter1.ExampleActivity;
 import chapter.android.aweme.ss.com.chapter1.R;
 
 /**
@@ -19,6 +20,7 @@ import chapter.android.aweme.ss.com.chapter1.R;
  */
 public class LifeCycleActivity extends AppCompatActivity {
 
+    public static TextView mLifecycleDisplay;
     private static final String TAG = "wangyi";
 
 
@@ -31,16 +33,16 @@ public class LifeCycleActivity extends AppCompatActivity {
     private static final String ON_DESTROY = "onDestroy";
 
 
-    private TextView mLifecycleDisplay;
-
-
     private void logAndAppend(String lifecycleEvent) {
         Log.d(TAG, "Lifecycle Event: " + lifecycleEvent);
-        mLifecycleDisplay.append(lifecycleEvent + "\n");
+
+        ExampleActivity.string += (lifecycleEvent + "\n");
+        mLifecycleDisplay.setText(ExampleActivity.string);
     }
 
     public void resetLifecycleDisplay(View view) {
         mLifecycleDisplay.setText("Lifecycle callbacks:\n");
+        ExampleActivity.string="";
     }
 
     public void showSaveInstance(View view) {
@@ -66,7 +68,8 @@ public class LifeCycleActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("#LifeCycleActivity被调用");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lifecycle);
         mLifecycleDisplay = findViewById(R.id.tv_loglifecycle);
