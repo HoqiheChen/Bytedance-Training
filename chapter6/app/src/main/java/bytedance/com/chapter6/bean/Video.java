@@ -1,5 +1,5 @@
 package bytedance.com.chapter6.bean;
-
+ 
 public class Video {
     private int imageId;
     private String videoPath;
