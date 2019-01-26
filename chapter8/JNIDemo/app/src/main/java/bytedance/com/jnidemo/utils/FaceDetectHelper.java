@@ -52,24 +52,24 @@ public class FaceDetectHelper {
     }
 
     public interface OnFaceDetectedCallback {
-        void onFaceDetected(int ret);
+        void onFaceDetected(int action,int top,int bottom,int left,int right);
     }
 
     public void detectFace(byte[] image, int pixelFormat, int width, int height, int stride) {
         nativeDetectFace(image, pixelFormat, width, height, stride);
     }
 
-    public void onFaceDetectedCallback(int ret) {
+    public void onFaceDetectedCallback(int action,int top,int bottom,int left,int right) {
         if (mFaceDetectedCallback != null) {
-            mFaceDetectedCallback.onFaceDetected(ret);
+            mFaceDetectedCallback.onFaceDetected(action,top,bottom,left,right);
         }
     }
 
     //TODO: add fact rect points through the params in the callback
-    public static void nativeOnFaceDetectedCallback(int ret) {
-        Log.d("FaceDetectHelper", "JAVA detectFaceCallbackMethod ret : " + ret);
+    public static void nativeOnFaceDetectedCallback(int action,int top,int bottom,int left,int right) {
+        Log.d("FaceDetectHelper", "JAVA detectFaceCallbackMethod ret : ");
         if (mHelper != null) {
-            mHelper.onFaceDetectedCallback(ret);
+            mHelper.onFaceDetectedCallback(action,top,bottom,left,right);
         }
     }
 

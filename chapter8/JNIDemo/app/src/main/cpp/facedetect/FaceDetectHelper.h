@@ -21,7 +21,7 @@ private:
     const char *mEffectLicense;
     const char *mEffectModelPath;
 
-    std::function<void(int)> mDetectFaceCallback;
+    std::function<void(int,int,int,int,int)> mDetectFaceCallback;
 
     byted_effect_handle_t mEffectHandler = NULL;
 
@@ -50,7 +50,7 @@ public:
 
     void writeBMP();
 
-    void setDetectFaceCallback(std::function<void(int)> callback) {
+    void setDetectFaceCallback(std::function<void(int,int,int,int,int)> callback) {
         mDetectFaceCallback = callback;
     }
 

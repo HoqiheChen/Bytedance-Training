@@ -65,14 +65,21 @@ public class MainActivity extends AppCompatActivity {
         FaceDetectHelper.getHelper().setLicense("TvEbeOPnOCXa62ql1AgSpWADbsODeYUfAz5eo8P+KJPxmD42PeH+UDg1kweybbeXzb3Yj0IHcOtNXMkijk7uJ0n9QS4FnB4Kvp2iKnFDEJ+/wdqGfasiA/3vbvpSakJ79sZG/zt8pMESgPrmaBh59OoMZMpfwAFcibdc/b38KNU=");
         FaceDetectHelper.getHelper().setFaceDetectedCallback(new FaceDetectHelper.OnFaceDetectedCallback() {
             @Override
-            public void onFaceDetected(final int ret) {
+            public void onFaceDetected(final int action,final int top,final int bottom,final int left,final int right) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         //TODO:
                         // 1 将人脸表情等通过ICON展示在UI上面
                         // 2 增加人脸位置返回值之后，通过方框的图在UI上面现实人脸区域
-                        tv.setText(ret + "");
+                        String out="";
+                        if(action == 2) out="眨眼睛";
+                        if(action == 4) out="嘴巴大张";
+                        if(action == 8) out="摇头";
+                        if(action == 10) out="点头";
+                        if(action == 20) out="眉毛挑动";
+                        if(action == 40) out="嘴巴嘟嘟";
+                        tv.setText(out+"   "+top+","+bottom+","+left+","+right);
                     }
                 });
             }

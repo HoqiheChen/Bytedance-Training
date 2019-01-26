@@ -85,7 +85,7 @@ Java_bytedance_com_jnidemo_utils_FaceDetectHelper_nativeInit(JNIEnv *env,
 
     if (faceDetectHelperClass != NULL) {
         detectFaceCallbackMethod = env->GetStaticMethodID(faceDetectHelperClass,
-                                                          "nativeOnFaceDetectedCallback", "(I)V");
+                                                          "nativeOnFaceDetectedCallback", "(IIIII)V");
         if (detectFaceCallbackMethod == NULL) {
             LOGE("detectFaceCallbackMethod NULL");
         } else {
@@ -97,11 +97,11 @@ Java_bytedance_com_jnidemo_utils_FaceDetectHelper_nativeInit(JNIEnv *env,
 
     if (mFaceDetectHelper == NULL) {
         mFaceDetectHelper = new FaceDetectHelper();
-        mFaceDetectHelper->setDetectFaceCallback([](int ret) {
+        mFaceDetectHelper->setDetectFaceCallback([](int action,int top,int bottom,int left,int right) {
             JNIEnv *_env = Android_JNI_GetEnv();
             if (_env != NULL && detectFaceCallbackMethod && mObj != NULL) {
-                LOGD("jni detectFaceCallbackMethod ret : %d", ret);
-                _env->CallStaticVoidMethod((jclass) mObj, detectFaceCallbackMethod, ret);
+//                LOGD("jni detectFaceCallbackMethod ret : %d", ret);
+                _env->CallStaticVoidMethod((jclass) mObj, detectFaceCallbackMethod, action,top,bottom,left,right);
             }
         });
     }

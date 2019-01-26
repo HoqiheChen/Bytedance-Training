@@ -79,7 +79,7 @@ FaceDetectHelper::detectFace(const unsigned char *image, int pixelFormat, int wi
     LOGD("detectFace image is %s", image);
     if (mEffectHandler == NULL) {
         if (mDetectFaceCallback != NULL) {
-            mDetectFaceCallback(-1);
+            mDetectFaceCallback(-1,-1,-1,-1,-1);
         }
         return;
     }
@@ -121,7 +121,7 @@ FaceDetectHelper::detectFace(const unsigned char *image, int pixelFormat, int wi
                     LOGD("byted_effect_face_detect face info action : %d - %d", i, item.action);
                     if (item.action > 0) {
                         //TODO: add face rect point
-                        mDetectFaceCallback(item.action);
+                        mDetectFaceCallback(item.action,item.rect.top,item.rect.bottom,item.rect.left,item.rect.right);
                     }
                 }
             }
@@ -129,7 +129,7 @@ FaceDetectHelper::detectFace(const unsigned char *image, int pixelFormat, int wi
     } else {
         LOGE("byted_effect_face_detect fail, result is %d", result);
         if (mDetectFaceCallback != NULL) {
-            mDetectFaceCallback(-2);
+            mDetectFaceCallback(-2,-2,-2,-2,-2);
         }
     }
 }
