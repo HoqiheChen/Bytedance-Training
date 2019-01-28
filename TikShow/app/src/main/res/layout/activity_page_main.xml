@@ -120,10 +120,12 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:src="@mipmap/add_bg"
+            android:onClick="RecordVideo"
             />
 
         <TextView
             android:layout_width="0dp"
+            android:clickable="true"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
@@ -131,6 +133,7 @@
             android:textColor="#f2f2f2"
             android:textSize="17sp"
             android:textStyle="bold"
+            android:onClick="Message"
             />
 
         <TextView

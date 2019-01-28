@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/zuhe"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <SurfaceView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/btn_facing"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/bigicon_change">
+        </ImageView>
+        <Button
+            android:id="@+id/video_record_finish_iv"
+            android:layout_marginLeft="180dp"
+            android:background="@drawable/tv_red_bg"
+            android:text="下一步"
+            android:textColor="@color/white"
+            android:layout_width="65dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center" />/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginBottom="18dp"
+        android:background="@color/black_10"
+        android:gravity="center_vertical">
+        />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/index_album"
+            android:layout_marginLeft="50dp"/>
+        <ImageView
+            android:id="@+id/btn_record"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/index_action3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="55dp">
+
+        </ImageView>
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/index_album"
+            android:layout_marginLeft="50dp"/>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
