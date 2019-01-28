@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bytedance.com.tikshow.HoqiheChen.MessageWatch.InfoActivity;
+import bytedance.com.tikshow.HoqiheChen.UserManage.view_activity.LoginActivity;
 import bytedance.com.tikshow.MainActivity;
 import bytedance.com.tikshow.R;
 import bytedance.com.tikshow.antoniolq.CustomCameraActivity;
@@ -228,9 +229,15 @@ public class MainPageActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CAPTURE);
         startActivity(new Intent(this, CustomCameraActivity.class));
     }
+
     public void Message(View view){
         startActivity(new Intent(this, InfoActivity.class));
     }
+
+    public void Login(View view){
+        startActivity(new Intent(this, LoginActivity.class));
+    }
+
     public void fetchFeed() {
 
         RetrofitManager.get(IMiniDouyinService.HOST).create(IMiniDouyinService.class).fetchFeed().enqueue(new Callback<FeedResponse>() {

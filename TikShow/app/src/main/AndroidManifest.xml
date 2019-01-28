@@ -36,6 +36,7 @@
         <activity android:name=".antoniolq.CustomCameraActivity" />
         <activity android:name=".antoniolq.VideoPlay"></activity>
         <activity android:name=".HoqiheChen.MessageWatch.InfoActivity"></activity>
+        <activity android:name=".HoqiheChen.UserManage.view_activity.LoginActivity"></activity>
     </application>
 
 </manifest>

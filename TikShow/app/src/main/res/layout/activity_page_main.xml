@@ -137,7 +137,9 @@
             />
 
         <TextView
+            android:clickable="true"
             android:layout_width="0dp"
+            android:onClick="Login"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
