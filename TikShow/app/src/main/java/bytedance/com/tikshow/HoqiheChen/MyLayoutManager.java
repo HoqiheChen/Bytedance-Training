@@ -56,10 +56,7 @@ public class MyLayoutManager extends LinearLayoutManager implements RecyclerView
                 int position = getPosition(view);
                 if (mOnViewPagerListener != null) {
                     mOnViewPagerListener.onPageSelected(position, position == getItemCount() - 1);
-
                 }
-//                postion  ---回调 ----》播放
-
 
                 break;
         }

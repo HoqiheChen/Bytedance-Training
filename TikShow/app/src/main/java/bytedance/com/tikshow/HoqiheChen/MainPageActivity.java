@@ -7,6 +7,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -17,10 +19,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import bytedance.com.tikshow.MainActivity;
 import bytedance.com.tikshow.R;
+import bytedance.com.tikshow.bean.Feed;
+import bytedance.com.tikshow.bean.FeedResponse;
+import bytedance.com.tikshow.network.IMiniDouyinService;
+import bytedance.com.tikshow.network.RetrofitManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainPageActivity extends AppCompatActivity {
@@ -30,6 +45,8 @@ public class MainPageActivity extends AppCompatActivity {
     private TextView textView;
     private MyAdapter mAdapter;
     MyLayoutManager myLayoutManager;
+    private List<Feed> mFeeds = new ArrayList<>();
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +54,7 @@ public class MainPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_page_main);
         initView();
         initListener();
+        fetchFeed();
     }
 
     private void initView() {
@@ -46,6 +64,7 @@ public class MainPageActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(this);
         mRecyclerView.setLayoutManager(myLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
     }
 
@@ -53,7 +72,7 @@ public class MainPageActivity extends AppCompatActivity {
         myLayoutManager.setOnViewPagerListener(new OnViewPagerListener() {
             @Override
             public void onInitComplete() {
-
+                fetchFeed();
             }
 
             @Override
@@ -75,11 +94,26 @@ public class MainPageActivity extends AppCompatActivity {
                 playVideo(0);
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                fetchFeed();
+                new Handler().postDelayed(new Runnable() {//模拟耗时操作
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);//取消刷新
+
+                    }
+                },2000);
+            }
+        });
     }
 
     class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private int[] imgs = {R.mipmap.img_video_1, R.mipmap.img_video_2, R.mipmap.img_video_3, R.mipmap.img_video_4, R.mipmap.img_video_5, R.mipmap.img_video_6, R.mipmap.img_video_7, R.mipmap.img_video_8};
-        private int[] videos = {R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1};
+//        private int[] imgs = {R.mipmap.img_video_1, R.mipmap.img_video_2, R.mipmap.img_video_3, R.mipmap.img_video_4, R.mipmap.img_video_5, R.mipmap.img_video_6, R.mipmap.img_video_7, R.mipmap.img_video_8};
+//        private int[] videos = {R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1, R.raw.video_1};
         private int index = 0;
         private Context mContext;
 
@@ -96,17 +130,17 @@ public class MainPageActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.img_thumb.setImageResource(imgs[index]);
-            holder.videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videos[index]));
-            index++;
-            if (index >= 7) {
-                index = 0;
-            }
+//            holder.img_thumb.setImageResource(imgs[index]);
+//            holder.videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + videos[index]));
+            Glide.with(holder.img_thumb.getContext()).load(mFeeds.get(position).getImageUrl()).into(holder.img_thumb);
+//            holder.img_thumb.setImageURI(Uri.parse(mFeeds.get(position).getImageUrl()));
+            holder.videoView.setVideoURI(Uri.parse(mFeeds.get(position).getVideoUrl()));
+
         }
 
         @Override
         public int getItemCount() {
-            return 88;
+            return mFeeds.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -127,6 +161,7 @@ public class MainPageActivity extends AppCompatActivity {
 
     private void releaseVideo(int index) {
         View itemView = mRecyclerView.getChildAt(index);
+        if(itemView == null) return;
         final VideoView videoView = itemView.findViewById(R.id.video_view);
         final ImageView imgThumb = itemView.findViewById(R.id.img_thumb);
         final ImageView imgPlay = itemView.findViewById(R.id.img_play);
@@ -182,5 +217,29 @@ public class MainPageActivity extends AppCompatActivity {
 
     public void HomePage(View view){
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    public void fetchFeed() {
+
+        RetrofitManager.get(IMiniDouyinService.HOST).create(IMiniDouyinService.class).fetchFeed().enqueue(new Callback<FeedResponse>() {
+            @Override
+            public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
+                Log.d(TAG, "onResponse() called with: call = [" + call + "], response = [" + response.body() + "]");
+                if (response.isSuccessful()) {
+                    mFeeds = response.body().getFeeds();
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                } else {
+                    Log.d(TAG, "onResponse() called with: response.errorBody() = [" + response.errorBody() + "]");
+                    Toast.makeText(MainPageActivity.this, "fetch feed failure!", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FeedResponse> call, Throwable t) {
+                Log.d(TAG, "onFailure() called with: call = [" + call + "], t = [" + t + "]");
+                Toast.makeText(MainPageActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 }
